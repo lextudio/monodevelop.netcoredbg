@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionModel>
+
+    <Extension path="/MonoDevelop/Debugging/DebuggerEngines">
+        <DebuggerEngine
+            id="MonoDevelop.Debugger.DotNetCore"
+            name="Samsung .NET Core Debugger"
+            features="Tracepoints, Catchpoints, DebugFile, Stepping, Pause, Breakpoints, ConditionalBreakpoints, Attaching"
+            type="MonoDevelop.Debugger.DotNetCore.DotNetCoreDebuggerEngine" />
+    </Extension>
+
+</ExtensionModel>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoDevelop.Addins" Version="0.4.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <AddinReference Include="MonoDevelop.AspNetCore" />
+    <AddinReference Include="MonoDevelop.Debugger.VsCodeDebugProtocol" />
+    <AddinReference Include="MonoDevelop.DotNetCore" />
+    <AddinReference Include="MonoDevelop.Debugger" />
+  </ItemGroup>
+</Project>
