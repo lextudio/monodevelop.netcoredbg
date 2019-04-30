@@ -26,4 +26,3 @@ Then you should be able to debug .NET Core projects in MonoDevelop.
 Known Issues
 ------------
 * Some breakpoints do not break.
-* Locals/watches might not work.
