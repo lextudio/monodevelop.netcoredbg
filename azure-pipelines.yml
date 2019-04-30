@@ -1,0 +1,42 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+jobs:
+- job: Linux
+
+  pool:
+    vmImage: 'ubuntu-16.04'
+
+  variables:
+    solution: '**/*.sln'
+    buildPlatform: 'Any CPU'
+    buildConfiguration: 'Release'
+
+  steps:
+  - script: |
+      sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+      sudo apt install apt-transport-https
+      echo "deb https://download.mono-project.com/repo/ubuntu vs-xenial main" | sudo tee /etc/apt/sources.list.d/mono-official-vs.list
+      sudo apt update
+      sudo apt install monodevelop
+      git clone https://github.com/mhutch/MonoDevelop.AddinMaker.git
+      cd MonoDevelop.AddinMaker
+      git checkout 7.x
+      make install
+      cd ..
+      msbuild MonoDevelop.Debugger.DotNetCore.sln /t:clean
+      msbuild MonoDevelop.Debugger.DotNetCore.sln /t:restore
+      msbuild MonoDevelop.Debugger.DotNetCore.sln
+      cd MonoDevelop.Debugger.DotNetCore/bin/Debug/net471
+      mdtool setup pack MonoDevelop.Debugger.DotNetCore.dll
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)'
+      contents: '**/MonoDevelop.Debugger.DotNetCore*.mpack'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: drop
