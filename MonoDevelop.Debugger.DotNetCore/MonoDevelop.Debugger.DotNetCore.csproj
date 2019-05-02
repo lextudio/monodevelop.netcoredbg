@@ -4,11 +4,23 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MonoDevelop.Addins" Version="0.4.6" />
+    <PackageReference Include="Xwt" Version="0.1.0" />
   </ItemGroup>
   <ItemGroup>
     <AddinReference Include="MonoDevelop.AspNetCore" />
     <AddinReference Include="MonoDevelop.Debugger.VsCodeDebugProtocol" />
     <AddinReference Include="MonoDevelop.DotNetCore" />
     <AddinReference Include="MonoDevelop.Debugger" />
+    <AddinReference Include="MonoDevelop.Ide" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MonoDevelop.Debugger.DotNetCore.Gui\" />
+    <Folder Include="MonoDevelop.Debugger.DotNetCore\" />
+    <Update Include="MonoDevelop.Debugger.DotNetCore.Gui\DotNetCoreDebuggerLocationWidget.UI.cs">
+      <DependentUpon>DotNetCoreDebuggerLocationWidget.cs</DependentUpon>
+    </Update>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Properties\AssemblyInfo.cs" />
   </ItemGroup>
 </Project>

@@ -63,17 +63,12 @@ namespace MonoDevelop.Debugger.DotNetCore
 
         protected override string GetDebugAdapterPath()
         {
-            var path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                "netcoredbg",
-                "bin",
-                Platform.IsWindows ? "netcoredbg.exe" : "netcoredbg");
-            if (!File.Exists(path))
+            if (!DotNetCoreDebuggerRuntime.IsInstalled)
             {
-                throw new ProtocolException($"Samsung .NET Core debugger is not at {path}. Please download and configure it before debugging a .NET Core project.");
+                throw new ProtocolException($"Samsung .NET Core debugger is not installed. Please download and configure it before debugging a .NET Core project.");
             }
 
-            return path;
+            return DotNetCoreDebuggerRuntime.FileName;
         }
 
         protected override string GetDebugAdapterArguments()

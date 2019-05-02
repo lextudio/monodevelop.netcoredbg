@@ -8,5 +8,15 @@
             features="Tracepoints, Catchpoints, DebugFile, Stepping, Pause, Breakpoints, ConditionalBreakpoints, Attaching"
             type="MonoDevelop.Debugger.DotNetCore.DotNetCoreDebuggerEngine" />
     </Extension>
+    
+    <Extension path="/MonoDevelop/Ide/GlobalOptionsDialog/Projects">
+        <Section id="DotNetCoreDebugger" _label=".NET Core Debuggers" icon="md-platform-netcore">
+            <Panel
+                id="DotNetCoreDebuggerSettings"
+                _label="Samsung .NET Core Debugger"
+                fill="true"
+                class="MonoDevelop.Debugger.DotNetCore.Gui.DotNetCoreDebuggerLocationPanel" />
+        </Section>
+    </Extension>
 
 </ExtensionModel>
