@@ -38,7 +38,12 @@ namespace MonoDevelop.Debugger.DotNetCore
 
         public override bool CanDebugCommand(ExecutionCommand cmd)
         {
-            return cmd is DotNetCoreExecutionCommand;
+            if (cmd is DotNetCoreExecutionCommand dotnet)
+            {
+                return true;
+            }
+
+            return cmd.GetType().Name == "AspNetCoreExecutionCommand";
         }
 
         public override DebuggerStartInfo CreateDebuggerStartInfo(ExecutionCommand cmd)
@@ -59,8 +64,30 @@ namespace MonoDevelop.Debugger.DotNetCore
 
                 return startInfo;
             }
+            else if (cmd.GetType().Name == "AspNetCoreExecutionCommand")
+            {
+                DebuggerStartInfo startInfo = new DebuggerStartInfo
+                {
+                    Command = (string)GetPropValue(cmd, "OutputPath"),
+                    Arguments = (string)GetPropValue(cmd, "DotNetArguments"),
+                    WorkingDirectory = (string)GetPropValue(cmd, "WorkingDirectory")
+                };
+                var variables = (IDictionary<string, string>)GetPropValue(cmd, "EnvironmentVariables");
+                if (variables.Count > 0)
+                {
+                    foreach (KeyValuePair<string, string> val in variables)
+                        startInfo.EnvironmentVariables[val.Key] = val.Value;
+                }
 
-            throw new NotSupportedException();
+                return startInfo;
+            }
+
+            throw new NotSupportedException("Only .NET Core projects are supported.");
+        }
+
+        private static object GetPropValue(object src, string propName)
+        {
+            return src.GetType().GetProperty(propName).GetValue(src, null);
         }
 
         public override DebuggerSession CreateSession()
