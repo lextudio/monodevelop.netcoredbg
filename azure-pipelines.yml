@@ -40,3 +40,35 @@ jobs:
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
       artifactName: drop
+
+- job: macOS
+
+  pool:
+    vmImage: 'macOS-10.14'
+
+  variables:
+    solution: '**/*.sln'
+    buildPlatform: 'Any CPU'
+    buildConfiguration: 'Release'
+
+  steps:
+  - script: |
+      git clone https://github.com/mhutch/MonoDevelop.AddinMaker.git
+      cd MonoDevelop.AddinMaker
+      make install
+      cd ..
+      msbuild MonoDevelop.Debugger.DotNetCore.sln /t:clean
+      msbuild MonoDevelop.Debugger.DotNetCore.sln /t:restore
+      msbuild MonoDevelop.Debugger.DotNetCore.sln
+      cd MonoDevelop.Debugger.DotNetCore/bin/Debug/net471
+      mono /Applications/Visual\ Studio.app/Contents/Resources/lib/monodevelop/bin/vstool.exe setup pack MonoDevelop.Debugger.DotNetCore.dll
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)'
+      contents: '**/MonoDevelop.Debugger.DotNetCore*.mpack'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: drop
+
