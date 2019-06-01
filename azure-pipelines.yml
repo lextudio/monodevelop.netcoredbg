@@ -52,6 +52,8 @@ jobs:
     buildConfiguration: 'Release'
 
   steps:
+  - script: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1
+    displayName: 'Select Xamarin SDK version'
   - script: |
       git clone https://github.com/mhutch/MonoDevelop.AddinMaker.git
       cd MonoDevelop.AddinMaker
